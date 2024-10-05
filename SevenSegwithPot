@@ -1,0 +1,74 @@
+// Define pins for seven-segment display segments (A to G)
+const int segA = 2;
+const int segB = 3;
+const int segC = 4;
+const int segD = 5;
+const int segE = 6;
+const int segF = 7;
+const int segG = 8;
+
+// Potentiometer pin
+const int potPin = A0;
+
+// Define pin for common pin (if using common anode, connected to 5V)
+const int commonPin = 9; // Use a free digital pin
+
+void setup() {
+  // Set segment pins as outputs
+  pinMode(segA, OUTPUT);
+  pinMode(segB, OUTPUT);
+  pinMode(segC, OUTPUT);
+  pinMode(segD, OUTPUT);
+  pinMode(segE, OUTPUT);
+  pinMode(segF, OUTPUT);
+  pinMode(segG, OUTPUT);
+  
+  // Set common pin as output (either connect to 5V or GND)
+  pinMode(commonPin, OUTPUT);
+  digitalWrite(commonPin, LOW);  // Set to LOW for common cathode display
+  // If using common anode display, set to HIGH
+
+  // Initialize all segments as off
+  clearSegments();
+}
+
+void loop() {
+  // Read the potentiometer value (0 to 1023)
+  int potValue = analogRead(potPin);
+
+  // Map the potentiometer value to a range from 0 to 6 (for 7 segments)
+  int segmentIndex = map(potValue, 0, 1023, 0, 6);
+
+  // Turn on the current segment and turn off the previous ones
+  displaySegment(segmentIndex);
+
+  delay(50); // Add a small delay for smooth operation
+}
+
+// Function to turn on a specific segment based on the index
+void displaySegment(int index) {
+  // First, turn off all segments
+  clearSegments();
+
+  // Turn on the segment based on the index
+  switch (index) {
+    case 0: digitalWrite(segA, HIGH); break;
+    case 1: digitalWrite(segB, HIGH); break;
+    case 2: digitalWrite(segC, HIGH); break;
+    case 3: digitalWrite(segD, HIGH); break;
+    case 4: digitalWrite(segE, HIGH); break;
+    case 5: digitalWrite(segF, HIGH); break;
+    case 6: digitalWrite(segG, HIGH); break;
+  }
+}
+
+// Function to clear all segments
+void clearSegments() {
+  digitalWrite(segA, LOW);
+  digitalWrite(segB, LOW);
+  digitalWrite(segC, LOW);
+  digitalWrite(segD, LOW);
+  digitalWrite(segE, LOW);
+  digitalWrite(segF, LOW);
+  digitalWrite(segG, LOW);
+}
